@@ -2,19 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Projects - Alpha Project Calculator</title>
+    <title>Projekter</title>
 </head>
 <body>
+
 <h1>Projektoversigt</h1>
 
-<ul>
-    <li th:each="project : ${projects}">
-        <strong th:text="${project.name}"></strong>
-        (<span th:text="${project.customer}"></span>)
-        - <span th:text="${project.estimatedHours}"></span> timer
-    </li>
-</ul>
+<a href="/projects/create">➕ Opret nyt projekt</a>
 
-<a href="/">← Tilbage til forsiden</a>
+<table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <th>Projektnavn</th>
+        <th>Kunde</th>
+        <th>Deadline</th>
+        <th>Handling</th>
+    </tr>
+
+    <tr th:each="project : ${projects}">
+        <td th:text="${project.name}"></td>
+        <td th:text="${project.customer}"></td>
+        <td th:text="${project.deadline}"></td>
+        <td>
+            <a th:href="@{'/projects/' + ${project.id}}">Åbn</a>
+        </td>
+    </tr>
+</table>
+
+<p th:if="${projects.size() == 0}">
+    Ingen projekter oprettet endnu.
+</p>
+
 </body>
 </html>

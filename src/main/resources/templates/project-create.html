@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret projekt</title>
+</head>
+<body>
+
+<h1>Opret nyt projekt</h1>
+
+<form action="/projects/create" method="post">
+
+    <label>
+        Projektnavn:
+        <input type="text" name="name" required>
+    </label>
+    <br><br>
+
+    <label>
+        Kunde:
+        <input type="text" name="customer" required>
+    </label>
+    <br><br>
+
+    <label>
+        Deadline:
+        <input type="date" name="deadline" required>
+    </label>
+    <br><br>
+
+    <button type="submit">Opret projekt</button>
+
+</form>
+
+<br>
+<a href="/projects">← Tilbage til projektoversigt</a>
+
+</body>
+</html>

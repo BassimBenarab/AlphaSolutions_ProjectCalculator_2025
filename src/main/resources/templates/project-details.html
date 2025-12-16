@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projekt</title>
+</head>
+<body>
+
+<h1 th:text="${project.name}"></h1>
+
+<p><strong>Kunde:</strong> <span th:text="${project.customer}"></span></p>
+<p><strong>Deadline:</strong> <span th:text="${project.deadline}"></span></p>
+
+<hr>
+
+<h3>Beregninger</h3>
+
+<p>
+    <strong>Samlet estimeret tid:</strong>
+    <span th:text="${project.totalEstimatedHours}"></span> timer
+</p>
+
+<p>
+    <strong>Dage tilbage:</strong>
+    <span th:text="${project.remainingDays}"></span>
+</p>
+
+<p>
+    <strong>Timer pr. dag:</strong>
+    <span th:text="${hoursPerDay}"></span>
+</p>
+
+<hr>
+
+<h3>Opgaver</h3>
+
+<ul>
+    <li th:each="task : ${project.tasks}">
+        <span th:text="${task.name}"></span>
+        –
+        <span th:text="${task.estimatedHours}"></span> timer
+    </li>
+</ul>
+
+<hr>
+
+<h3>Tilføj opgave</h3>
+
+<form th:action="@{'/projects/' + ${project.id} + '/tasks'}" method="post">
+    <label>
+        Opgavenavn:
+        <input type="text" name="taskName" required>
+    </label>
+    <br><br>
+
+    <label>
+        Estimerede timer:
+        <input type="number" name="estimatedHours" required>
+    </label>
+    <br><br>
+
+    <button type="submit">Tilføj opgave</button>
+</form>
+
+<br>
+<a href="/projects">← Tilbage til projekter</a>
+
+</body>
+</html>
