@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects - Alpha Project Calculator</title>
+</head>
+<body>
+<h1>Projektoversigt</h1>
+
+<ul>
+    <li th:each="project : ${projects}">
+        <strong th:text="${project.name}"></strong>
+        (<span th:text="${project.customer}"></span>)
+        - <span th:text="${project.estimatedHours}"></span> timer
+    </li>
+</ul>
+
+<a href="/">← Tilbage til forsiden</a>
+</body>
+</html>
