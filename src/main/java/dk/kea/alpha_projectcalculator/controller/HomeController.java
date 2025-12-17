@@ -14,26 +14,26 @@ public class HomeController {
 
     private List<Project> projects = new ArrayList<>();
 
-    // Forside
+    // ---------- FORSIDE ----------
     @GetMapping("/")
     public String index() {
-        return "redirect:/projects";
+        return "index";
     }
 
-    // Projektoversigt
+    // ---------- VIS ALLE PROJEKTER ----------
     @GetMapping("/projects")
-    public String projects(Model model) {
+    public String showProjects(Model model) {
         model.addAttribute("projects", projects);
         return "projects";
     }
 
-    // Vis formular til oprettelse
+    // ---------- OPRET PROJEKT (FORM) ----------
     @GetMapping("/projects/create")
     public String createProjectForm() {
         return "project-create";
     }
 
-    // Opret projekt
+    // ---------- OPRET PROJEKT (POST) ----------
     @PostMapping("/projects/create")
     public String createProject(
             @RequestParam String name,
@@ -41,7 +41,6 @@ public class HomeController {
             @RequestParam String deadline
     ) {
         Project project = new Project(
-                System.currentTimeMillis(),
                 name,
                 customer,
                 LocalDate.parse(deadline)
@@ -51,43 +50,28 @@ public class HomeController {
         return "redirect:/projects";
     }
 
-    // Projektdetaljer
-    @GetMapping("/projects/{id}")
-    public String projectDetails(@PathVariable Long id, Model model) {
-
-        Project project = null;
-        for (Project p : projects) {
-            if (p.getId().equals(id)) {
-                project = p;
-                break;
-            }
-        }
-
-        if (project == null) {
-            return "redirect:/projects";
-        }
+    // ---------- VIS ÉT PROJEKT ----------
+    @GetMapping("/projects/{index}")
+    public String showProject(@PathVariable int index, Model model) {
+        Project project = projects.get(index);
 
         model.addAttribute("project", project);
+        model.addAttribute("index", index);
         model.addAttribute("hoursPerDay", project.getHoursPerDay());
 
         return "project-details";
     }
 
-    // Tilføj opgave
-    @PostMapping("/projects/{id}/tasks")
+    // ---------- TILFØJ OPGAVE ----------
+    @PostMapping("/projects/{index}/tasks")
     public String addTask(
-            @PathVariable Long id,
+            @PathVariable int index,
             @RequestParam String taskName,
             @RequestParam int estimatedHours
     ) {
+        Project project = projects.get(index);
+        project.addTask(taskName, estimatedHours);
 
-        for (Project project : projects) {
-            if (project.getId().equals(id)) {
-                project.addTask(taskName, estimatedHours);
-                break;
-            }
-        }
-
-        return "redirect:/projects/" + id;
+        return "redirect:/projects/" + index;
     }
 }

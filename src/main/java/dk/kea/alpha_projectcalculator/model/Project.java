@@ -7,25 +7,19 @@ import java.util.List;
 
 public class Project {
 
-    private Long id;
     private String name;
     private String customer;
     private LocalDate deadline;
 
     private List<Task> tasks = new ArrayList<>();
 
-    public Project(Long id, String name, String customer, LocalDate deadline) {
-        this.id = id;
+    public Project(String name, String customer, LocalDate deadline) {
         this.name = name;
         this.customer = customer;
         this.deadline = deadline;
     }
 
-    // -------- Getters --------
-
-    public Long getId() {
-        return id;
-    }
+    // ---------- GETTERS ----------
 
     public String getName() {
         return name;
@@ -43,12 +37,15 @@ public class Project {
         return tasks;
     }
 
-    // -------- Forretningslogik --------
+    // ---------- OPGAVER ----------
 
     public void addTask(String name, int estimatedHours) {
         tasks.add(new Task(name, estimatedHours));
     }
 
+    // ---------- BEREGNINGER ----------
+
+    // Samlet estimeret tid for projektet
     public int getTotalEstimatedHours() {
         int total = 0;
         for (Task task : tasks) {
@@ -57,14 +54,16 @@ public class Project {
         return total;
     }
 
-    public long getRemainingDays() {
+    // Antal dage til deadline
+    public long getDaysUntilDeadline() {
         return ChronoUnit.DAYS.between(LocalDate.now(), deadline);
     }
 
+    // Timer pr. dag for at nå deadline
     public double getHoursPerDay() {
-        long days = getRemainingDays();
+        long days = getDaysUntilDeadline();
         if (days <= 0) {
-            return getTotalEstimatedHours();
+            return 0;
         }
         return (double) getTotalEstimatedHours() / days;
     }
