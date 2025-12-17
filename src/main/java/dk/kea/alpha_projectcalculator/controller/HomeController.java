@@ -17,7 +17,7 @@ public class HomeController {
     // ---------- FORSIDE ----------
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "redirect:/projects";
     }
 
     // ---------- VIS ALLE PROJEKTER ----------
