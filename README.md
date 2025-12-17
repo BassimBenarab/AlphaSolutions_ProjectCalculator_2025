@@ -84,3 +84,50 @@ Projektet anvender **GitHub Actions** til Continuous Integration og Continuous D
 - Deployment til Azure Web App ved ændringer på `main` branch
 
 Workflow-filen findes i:
+.github/workflows/
+
+yaml
+Kopier kode
+
+---
+
+## Deployment
+
+Applikationen er deployet som en **Azure Web App (PaaS)** og er offentligt tilgængelig.
+
+🔗 **Link til kørende applikation:**  
+*(indsæt jeres Azure URL her)*
+
+---
+
+## Krav for at køre projektet lokalt
+
+For at køre projektet lokalt kræves:
+
+- Java 17 eller nyere
+- Maven
+- Git
+
+Projektet startes lokalt med:
+```bash
+mvn spring-boot:run
+GitHub Repository
+Dette repository indeholder:
+
+Kildekode til webapplikationen
+
+CI/CD workflow
+
+Dokumentation til eksamensprojektet
+
+Contributing
+Se CONTRIBUTING.md for information om, hvordan nye teammedlemmer kan bidrage til projektet.
+
+Gruppe
+Projektet er udviklet af:
+
+Bassim Benarab
+
+Lamal Huseynova
+
+
