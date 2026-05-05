@@ -1,39 +1,38 @@
 package dk.kea.alpha_projectcalculator.controller;
 
 import dk.kea.alpha_projectcalculator.model.Project;
+import dk.kea.alpha_projectcalculator.repository.ProjectRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class HomeController {
 
-    private List<Project> projects = new ArrayList<>();
+    private final ProjectRepository projectRepository;
 
-    // ---------- FORSIDE ----------
+    public HomeController(ProjectRepository projectRepository) {
+        this.projectRepository = projectRepository;
+    }
+
     @GetMapping("/")
     public String index() {
         return "redirect:/projects";
     }
 
-    // ---------- VIS ALLE PROJEKTER ----------
     @GetMapping("/projects")
     public String showProjects(Model model) {
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects", projectRepository.findAll());
         return "projects";
     }
 
-    // ---------- OPRET PROJEKT (FORM) ----------
     @GetMapping("/projects/create")
     public String createProjectForm() {
         return "project-create";
     }
 
-    // ---------- OPRET PROJEKT (POST) ----------
     @PostMapping("/projects/create")
     public String createProject(
             @RequestParam String name,
@@ -46,32 +45,33 @@ public class HomeController {
                 LocalDate.parse(deadline)
         );
 
-        projects.add(project);
+        projectRepository.save(project);
         return "redirect:/projects";
     }
 
-    // ---------- VIS ÉT PROJEKT ----------
-    @GetMapping("/projects/{index}")
-    public String showProject(@PathVariable int index, Model model) {
-        Project project = projects.get(index);
+    @GetMapping("/projects/{id}")
+    public String showProject(@PathVariable Long id, Model model) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
         model.addAttribute("project", project);
-        model.addAttribute("index", index);
         model.addAttribute("hoursPerDay", project.getHoursPerDay());
 
         return "project-details";
     }
 
-    // ---------- TILFØJ OPGAVE ----------
-    @PostMapping("/projects/{index}/tasks")
+    @PostMapping("/projects/{id}/tasks")
     public String addTask(
-            @PathVariable int index,
+            @PathVariable Long id,
             @RequestParam String taskName,
             @RequestParam int estimatedHours
     ) {
-        Project project = projects.get(index);
-        project.addTask(taskName, estimatedHours);
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
 
-        return "redirect:/projects/" + index;
+        project.addTask(taskName, estimatedHours);
+        projectRepository.save(project);
+
+        return "redirect:/projects/" + id;
     }
 }
