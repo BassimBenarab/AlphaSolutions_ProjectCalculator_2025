@@ -58,6 +58,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- H2 Console – gør /h2-console tilgængelig i Spring Boot 4 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-h2console</artifactId>
+        </dependency>
+
         <!-- Test-dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
